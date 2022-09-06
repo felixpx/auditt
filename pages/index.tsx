@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useMoralis } from "react-moralis";
 import Landing from "../src/components/Landing";
+import Dashboard from "../src/components/Dashboard";
 
 const Home: NextPage = () => {
   const { isAuthenticated } = useMoralis();
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
-        <Landing />
+        <Dashboard />
       </main>
 
       <footer className="flex h-24 w-full items-center justify-center border-t">
@@ -26,8 +27,7 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          Powered by Auditt
         </a>
       </footer>
     </div>

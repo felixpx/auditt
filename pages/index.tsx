@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Head>
         <title>Auditt</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/auditt-full.png" />
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
@@ -27,7 +27,16 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          ETH GLOBAL
+          <Image src={"/ethglobal.png"} width={80} height={75} />
+        </a>
+
+        <a
+          className="flex items-center justify-center gap-2"
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image src={"/auditt-full.png"} width={75} height={75} />
         </a>
         <a
           className="flex items-center justify-center gap-2"
@@ -35,23 +44,7 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          ETH ONLINE 2022
-        </a>
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          AUDITT
-        </a>
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          by Dominic Hackett, Felix Prabitz and Devin Lamoreux
+          FDD
         </a>
       </footer>
     </div>

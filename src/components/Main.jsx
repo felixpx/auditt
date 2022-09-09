@@ -34,7 +34,7 @@ export default function Main() {
   const [selectedTab, setSelectedTab] = useState("Market");
   return (
     <>
-      <div className="min-h-full w-full fixed top-0">
+      <div className="min-h-full z-10 w-full fixed top-0">
         <div className="bg-gray-800 pb-32">
           <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
@@ -45,8 +45,8 @@ export default function Main() {
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
                           <img
-                            className="h-8 w-8"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                            className="h-10 w-10"
+                            src="/auditt-full.png"
                             alt="Your Company"
                           />
                         </div>

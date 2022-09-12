@@ -22,6 +22,26 @@ const products = [
     price: "$10000",
     color: "Art",
   },
+  {
+    id: 1,
+    name: "Auditt NFT",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    price: "$99",
+    color: "Collateral Art",
+  },
+  {
+    id: 1,
+    name: "ARTWORK XYZ",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    price: "$10000",
+    color: "Art",
+  },
 ];
 
 export default function Marketlist() {

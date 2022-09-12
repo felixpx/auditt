@@ -33,8 +33,8 @@ export default function Main() {
   const [selectedTab, setSelectedTab] = useState("Market");
   return (
     <>
-      <div className="min-h-full z-10 w-full fixed top-0">
-        <div className="bg-gray-800 pb-32">
+      <div className="min-h-full z-10 w-full sticky top-0">
+        <div className="bg-gray-800 pb-32 ">
           <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
               <>

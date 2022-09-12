@@ -16,7 +16,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/auditt-full.png" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
+      <main className="flex w-full flex-1 overflow-y-scroll flex-col items-center justify-center text-center">
         <Main />
       </main>
 

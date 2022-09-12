@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Account from "./Account";
+import Collection from "./Collection";
 
 const tabs = [
   { name: "Account", href: "#", current: true },
   { name: "Collection", href: "#", current: false },
-  { name: "Insights", href: "#", current: false },
+  // { name: "Insights", href: "#", current: false },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function DashboardTabs() {
   const [selectedTab, setSelectedTab] = useState("Account");
   return (
     <div>
@@ -68,7 +69,9 @@ export default function Example() {
       <div hidden={selectedTab != "Account"}>
         <Account />
       </div>
-      <div hidden={selectedTab != "Collection"}>{/* <Collection /> */}</div>
+      <div hidden={selectedTab != "Collection"}>
+        <Collection />
+      </div>
       <div hidden={selectedTab != "Insights"}>{/* <Insights /> */}</div>
     </div>
   );

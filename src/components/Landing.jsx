@@ -140,14 +140,14 @@ export default function Landing() {
                   ))}
                 </div>
               </div>
-              <div className="hidden md:flex md:items-center md:space-x-6">
+              {/* <div className="hidden md:flex md:items-center md:space-x-6">
                 <a
                   href="#"
                   className="text-base font-medium text-white hover:text-gray-300"
                 >
                   Log in
                 </a>
-              </div>
+              </div> */}
             </nav>
           </div>
 
@@ -169,7 +169,8 @@ export default function Landing() {
                   <div>
                     <img
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?from-color=teal&from-shade=500&to-color=cyan&to-shade=600&toShade=600"
+                      // src="https://tailwindui.com/img/logos/mark.svg?from-color=teal&from-shade=500&to-color=cyan&to-shade=600&toShade=600"
+                      src="/auditt-full.png"
                       alt=""
                     />
                   </div>
@@ -181,14 +182,14 @@ export default function Landing() {
                   </div>
                 </div>
                 <div className="pt-5 pb-6">
-                  <div className="mt-6 px-5">
+                  {/* <div className="mt-6 px-5">
                     <a
                       href="#"
                       className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 text-center font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700"
                     >
                       Login
                     </a>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Popover.Panel>
@@ -233,7 +234,8 @@ export default function Landing() {
                     {/* Illustration taken from Lucid Illustrations: https://lucid.pixsellz.io/ */}
                     <img
                       className="w-full lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                      src="https://tailwindui.com/img/component-images/cloud-illustration-teal-cyan.svg"
+                      // src="https://tailwindui.com/img/component-images/cloud-illustration-teal-cyan.svg"
+                      src="/auditt-full.png"
                       alt=""
                     />
                   </div>

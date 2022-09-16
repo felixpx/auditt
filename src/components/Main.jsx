@@ -16,6 +16,7 @@ const navigation = [
   { name: "Market", href: "#", current: true },
   { name: "Dashboard", href: "#", current: false },
   { name: "Move", href: "#", current: false },
+  { name: "Staking", href: "#", current: false },
 ];
 const userNavigation = [
   //   { name: "Your Profile", href: "#" },

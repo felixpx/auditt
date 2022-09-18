@@ -1,8 +1,11 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 
 export default function Account() {
   const { user, Moralis, isAuthenticated } = useMoralis();
+
+  const router = useRouter();
   const [profile, setProfile] = useState({
     name: "Ricardo Cooper",
     imageUrl:
@@ -22,6 +25,10 @@ export default function Account() {
       Sits: "",
     },
   });
+
+  function moveToKYC() {
+    router.push("/kyc");
+  }
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -76,14 +83,10 @@ export default function Account() {
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                           <button
-                            type="button"
+                            onClick={moveToKYC}
                             className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                           >
-                            {/* <EnvelopeIcon
-                              className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
-                            /> */}
-                            <span>Edit</span>
+                            <span>KYC</span>
                           </button>
                         </div>
                       </div>

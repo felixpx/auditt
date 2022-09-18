@@ -1,30 +1,17 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-// import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/outline";
 import { useMoralis } from "react-moralis";
-import Header from "./Header";
-import Market from "./market/Market";
-import Dashboard from "./dashboard/Dashboard";
-import Bridge from "./bridge/Bridge";
-import Staking from "./staking/Staking";
+import Header from "../Header";
+import KYCBody from "./KYCBody";
+import { useRouter } from "next/router";
 
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
   imageUrl: "/user.png",
 };
-const navigation = [
-  { name: "Market", href: "#", current: false },
-  { name: "Dashboard", href: "#", current: false },
-  { name: "Bridge", href: "#", current: false },
-  { name: "Staking", href: "#", current: false },
-];
-const userNavigation = [
-  //   { name: "Your Profile", href: "#" },
-  //   { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+const navigation = [{ name: "KYC", href: "#", current: true }];
+const userNavigation = [{ name: "Sign out", href: "#" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,8 +19,17 @@ function classNames(...classes) {
 
 export default function Main() {
   const { logout } = useMoralis();
+  const router = useRouter();
 
-  const [selectedTab, setSelectedTab] = useState("Market");
+  const [selectedTab, setSelectedTab] = useState("KYC");
+
+  function check() {
+    if (selectedTab == "Back") {
+      href == "/";
+    } else {
+      href == "#";
+    }
+  }
   return (
     <>
       <div className="min-h-full z-10 w-full sticky top-0">
@@ -50,6 +46,9 @@ export default function Main() {
                             className="h-10 w-10"
                             src="/auditt-full.png"
                             alt="Your Company"
+                            onClick={() => {
+                              router.push("/");
+                            }}
                           />
                         </div>
                         <div className="hidden md:block">
@@ -82,7 +81,6 @@ export default function Main() {
                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
                             <span className="sr-only">View notifications</span>
-                            {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                           </button>
 
                           {/* Profile dropdown */}
@@ -190,7 +188,6 @@ export default function Main() {
                         className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
                         <span className="sr-only">View notifications</span>
-                        {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                       </button>
                     </div>
                     <div className="mt-3 space-y-1 px-2">
@@ -210,31 +207,13 @@ export default function Main() {
               </>
             )}
           </Disclosure>
-          <div hidden={selectedTab != "Market"}>
-            <Header selectedTab={selectedTab} />
-          </div>
-          <div hidden={selectedTab != "Dashboard"}>
-            <Header selectedTab={selectedTab} />
-          </div>
-          <div hidden={selectedTab != "Bridge"}>
-            <Header selectedTab={selectedTab} />
-          </div>
-          <div hidden={selectedTab != "Staking"}>
+          <div hidden={selectedTab != "KYC"}>
             <Header selectedTab={selectedTab} />
           </div>
         </div>
 
-        <div hidden={selectedTab != "Market"}>
-          <Market />
-        </div>
-        <div hidden={selectedTab != "Dashboard"}>
-          <Dashboard />
-        </div>
-        <div hidden={selectedTab != "Bridge"}>
-          <Bridge />
-        </div>
-        <div hidden={selectedTab != "Staking"}>
-          <Staking />
+        <div hidden={selectedTab != "KYC"}>
+          <KYCBody />
         </div>
       </div>
     </>

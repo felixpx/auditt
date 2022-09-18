@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SaleModal from "./SaleModal";
+import SaleModal from "../modals/SaleModal";
 
 const products = [
   {

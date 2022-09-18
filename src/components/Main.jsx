@@ -1,13 +1,12 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-// import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/outline";
 import { useMoralis } from "react-moralis";
 import Header from "./Header";
 import Market from "./market/Market";
 import Dashboard from "./dashboard/Dashboard";
 import Bridge from "./bridge/Bridge";
 import Staking from "./staking/Staking";
+import { useRouter } from "next/router";
 
 const user = {
   name: "Tom Cook",
@@ -20,11 +19,7 @@ const navigation = [
   { name: "Bridge", href: "#", current: false },
   { name: "Staking", href: "#", current: false },
 ];
-const userNavigation = [
-  //   { name: "Your Profile", href: "#" },
-  //   { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+const userNavigation = [{ name: "Sign out", href: "#" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,6 +27,8 @@ function classNames(...classes) {
 
 export default function Main() {
   const { logout } = useMoralis();
+
+  const router = useRouter();
 
   const [selectedTab, setSelectedTab] = useState("Market");
   return (
@@ -82,7 +79,6 @@ export default function Main() {
                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
                             <span className="sr-only">View notifications</span>
-                            {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                           </button>
 
                           {/* Profile dropdown */}
@@ -107,6 +103,22 @@ export default function Main() {
                               leaveTo="transform opacity-0 scale-95"
                             >
                               <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div
+                                  onClick={() => {
+                                    router.push("/kyc");
+                                  }}
+                                  className=" cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                                >
+                                  KYC
+                                </div>
+                                <div
+                                  onClick={() => {
+                                    router.push("/admin");
+                                  }}
+                                  className=" cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                                >
+                                  Admin
+                                </div>
                                 {userNavigation.map((item) => (
                                   <Menu.Item key={item.name}>
                                     {({ active }) => (
@@ -131,17 +143,6 @@ export default function Main() {
                         {/* Mobile menu button */}
                         <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">Open main menu</span>
-                          {/* {open ? (
-                            <XMarkIcon
-                              className="block h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <Bars3Icon
-                              className="block h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          )} */}
                         </Disclosure.Button>
                       </div>
                     </div>
@@ -190,7 +191,6 @@ export default function Main() {
                         className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
                         <span className="sr-only">View notifications</span>
-                        {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                       </button>
                     </div>
                     <div className="mt-3 space-y-1 px-2">

@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { useMoralis } from "react-moralis";
 import Header from "../Header";
-import KYCBody from "./KYCBody";
+import AdminBody from "./AdminBody";
 import { useRouter } from "next/router";
 
 const user = {
@@ -10,7 +10,7 @@ const user = {
   email: "tom@example.com",
   imageUrl: "/user.png",
 };
-const navigation = [{ name: "KYC", href: "#", current: true }];
+const navigation = [{ name: "Admin", href: "#", current: true }];
 const userNavigation = [{ name: "Sign out", href: "#" }];
 
 function classNames(...classes) {
@@ -21,7 +21,7 @@ export default function Main() {
   const { logout } = useMoralis();
   const router = useRouter();
 
-  const [selectedTab, setSelectedTab] = useState("KYC");
+  const [selectedTab, setSelectedTab] = useState("Admin");
 
   function check() {
     if (selectedTab == "Back") {
@@ -113,14 +113,7 @@ export default function Main() {
                                 >
                                   Home
                                 </div>
-                                <div
-                                  onClick={() => {
-                                    router.push("/admin");
-                                  }}
-                                  className=" cursor-pointer block px-4 py-2 text-sm text-gray-700"
-                                >
-                                  Admin
-                                </div>
+
                                 {userNavigation.map((item) => (
                                   <Menu.Item key={item.name}>
                                     {({ active }) => (
@@ -223,13 +216,13 @@ export default function Main() {
               </>
             )}
           </Disclosure>
-          <div hidden={selectedTab != "KYC"}>
+          <div hidden={selectedTab != "Admin"}>
             <Header selectedTab={selectedTab} />
           </div>
         </div>
 
-        <div hidden={selectedTab != "KYC"}>
-          <KYCBody />
+        <div hidden={selectedTab != "Admin"}>
+          <AdminBody />
         </div>
       </div>
     </>

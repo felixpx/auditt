@@ -3,16 +3,16 @@ import { useState } from "react";
 // import Collection from "./Collection";
 
 const tabs = [
-  { name: "DeBridge", href: "#", current: true },
-  { name: "Connext", href: "#", current: false },
+  { name: "Admin 1", href: "#", current: true },
+  { name: "Admin 2", href: "#", current: false },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function BridgeTabs() {
-  const [selectedTab, setSelectedTab] = useState("DeBridge");
+export default function AdminTabs() {
+  const [selectedTab, setSelectedTab] = useState("Admin 1");
 
   return (
     <div className="bg-white z-50 rounded-xl overflow-y-scroll shadow-xl">
@@ -71,12 +71,12 @@ export default function BridgeTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "DeBridge"} className="py-96">
+        <div hidden={selectedTab != "Admin 1"} className="py-96">
           {/* <DeBridge /> */}
         </div>
 
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Connext"} className="py-96">
+        <div hidden={selectedTab != "Admin 2"} className="py-96">
           {/* <Connext /> */}
         </div>
       </div>

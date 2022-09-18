@@ -52,14 +52,14 @@ export default function Account() {
               <article>
                 {/* Profile header */}
                 <div>
-                  <div>
+                  {/* <div>
                     <img
                       className="h-32 w-full object-cover rounded-t-lg lg:h-48"
                       src={profile.coverImageUrl}
                       alt=""
                     />
-                  </div>
-                  <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                  </div> */}
+                  <div className="mx-auto max-w-5xl px-4 py-32 sm:px-6 lg:px-8">
                     <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                       <div className="flex">
                         <img

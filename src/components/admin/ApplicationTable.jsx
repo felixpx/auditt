@@ -29,6 +29,7 @@ export default function ApplicationTable() {
           id: result.id,
           name: result.get("firstName") + " " + result.get("lastName"),
           email: result.get("emailAddress"),
+          dateOfBirth: result.get("dateOfBirth"),
           address: result.get("streetAddress"),
           city: result.get("city"),
           file: result.get("birthCertificate"),
@@ -68,6 +69,7 @@ export default function ApplicationTable() {
               >
                 Email
               </th>
+
               <th
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -96,6 +98,7 @@ export default function ApplicationTable() {
                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                   {kyc.email}
                 </td>
+
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <span
                     className={`inline-flex rounded-full bg-green-100 px-2 text-xs ${

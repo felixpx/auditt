@@ -71,7 +71,7 @@ export default function DashboardTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "Account"} className="py-12">
+        <div hidden={selectedTab != "Account"} className="py-16">
           <Account />
         </div>
 

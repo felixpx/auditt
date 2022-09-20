@@ -6,8 +6,7 @@ const products = [
     id: 1,
     name: "Auditt NFT",
     href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageSrc: "/adtt-nfts/adtt-50.png",
     imageAlt: "Front of men's Basic Tee in black.",
     price: "50",
     color: "Collateral Art",
@@ -16,8 +15,7 @@ const products = [
     id: 2,
     name: "Auditt NFT",
     href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageSrc: "/adtt-nfts/adtt-100.png",
     imageAlt: "Front of men's Basic Tee in black.",
     price: "100",
     color: "Collateral Art",
@@ -26,28 +24,27 @@ const products = [
     id: 3,
     name: "Auditt NFT",
     href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageSrc: "/adtt-nfts/adtt-500.png",
     imageAlt: "Front of men's Basic Tee in black.",
     price: "500",
     color: "Collateral Art",
   },
   {
-    id: 3,
+    id: 4,
     name: "Auditt NFT",
     href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageSrc: "/adtt-nfts/adtt-1000.png",
+
     imageAlt: "Front of men's Basic Tee in black.",
     price: "1000",
     color: "Collateral Art",
   },
   {
-    id: 3,
+    id: 5,
     name: "Auditt NFT",
     href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageSrc: "/adtt-nfts/adtt-10000.png",
+
     imageAlt: "Front of men's Basic Tee in black.",
     price: "10000",
     color: "Collateral Art",
@@ -141,7 +138,7 @@ export default function Marketlist() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "Auditt Listings"} className="py-24">
+        <div hidden={selectedTab != "Auditt Listings"} className="py-32">
           {openPurchase && <PurchaseModal tokenId={tokenId} />}
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
             {products.map((product) => (
@@ -150,7 +147,7 @@ export default function Marketlist() {
                 key={product.id}
                 className="group relative"
               >
-                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
+                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-xl bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                   <img
                     src={product.imageSrc}
                     alt={product.imageAlt}

@@ -22,6 +22,7 @@ export default function KYCForm() {
     const firstName = document.getElementById("first-name").value;
     const lastName = document.getElementById("last-name").value;
     const emailAddress = document.getElementById("email-address").value;
+    const dateOfBirth = document.getElementById("date-of-birth").value;
     const country = document.getElementById("country").value;
     const streetAddress = document.getElementById("street-address").value;
     const city = document.getElementById("city").value;
@@ -65,15 +66,29 @@ export default function KYCForm() {
 
       const KYC = new Moralis.Object.extend("KYC");
       const kyc = new KYC();
+
+      const _User = new Moralis.Object.extend("_User");
+      const user = new _User();
+      // store in user class
+      user.set("firstName", firstName);
+      user.set("lastName", lastName);
+      user.set("emailAddress", emailAddress);
+      user.set("dateOfBirth", dateOfBirth);
+      user.set("country", country);
+      user.set("city", city);
+
+      // store in kyc class
       kyc.set("firstName", firstName);
       kyc.set("lastName", lastName);
       kyc.set("emailAddress", emailAddress);
+      kyc.set("dateOfBirth", dateOfBirth);
       kyc.set("country", country);
       kyc.set("streetAddress", streetAddress);
       kyc.set("city", city);
       kyc.set("region", region);
       kyc.set("postalCode", postalCode);
       kyc.set("birthCertificate", ipfsCertificate);
+      user.save();
       kyc.save().then((data) => {
         setDialogType(1); // Success
         setNotificationTitle("Successful");
@@ -156,6 +171,21 @@ export default function KYCForm() {
                   name="email-address"
                   id="email-address"
                   autoComplete="email"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="col-span-6 sm:col-span-4">
+                <label
+                  htmlFor="email-address"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Date Of Birth
+                </label>
+                <input
+                  type="date"
+                  name="date-of-birth"
+                  id="date-of-birth"
+                  autoComplete="date of birth"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
@@ -247,7 +277,7 @@ export default function KYCForm() {
         </div>
         <div className="flex flex-col items-center mt-8 w-full">
           <label className="block text-sm font-medium text-gray-700">
-            Birth Certificate
+            Picture ID
           </label>
           <div className="mt-1 flex justify-center rounded-md border-2 w-6/12 border-dashed border-gray-300 px-6 pt-5 pb-6">
             <div className="space-y-1 text-center">

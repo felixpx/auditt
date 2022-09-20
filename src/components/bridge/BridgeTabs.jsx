@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import Account from "./Account";
+import DeBridge from "./DeBridge";
 // import Collection from "./Collection";
 
 const tabs = [
@@ -71,8 +71,8 @@ export default function BridgeTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "DeBridge"} className="py-96">
-          {/* <DeBridge /> */}
+        <div hidden={selectedTab != "DeBridge"} className="py-24">
+          <DeBridge />
         </div>
 
         {/* COLLECTION ARTICLES */}

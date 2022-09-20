@@ -4,9 +4,9 @@ import { MoralisProvider } from "react-moralis";
 import { MoralisDappProvider } from "../src/MoralisDappProvider/MoralisDappProvider";
 
 // const APP_ID = process.env.NEXT_APP_MORALIS_APP_ID;
-const APP_ID = "PwE9zZL74dyQiIdDo5qFP1uUIkq6xTVgiP9ul7Fb";
+const APP_ID = "dreoo89XW0uB50ieEXTerxgVfKEIqMBwtGD5itW2";
 // const SERVER_URL = process.env.NEXT_APP_MORALIS_SERVER_URL;
-const SERVER_URL = "https://fscxsw3halcr.usemoralis.com:2053/server";
+const SERVER_URL = "https://5ish1zkw6wqx.usemoralis.com:2053/server";
 
 function Auditt({ Component, pageProps }: AppProps) {
   const isServerInfo = APP_ID && SERVER_URL ? true : false;

@@ -9,7 +9,7 @@ const products = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$50",
+    price: "50",
     color: "Collateral Art",
   },
   {
@@ -19,7 +19,7 @@ const products = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$100",
+    price: "100",
     color: "Collateral Art",
   },
   {
@@ -29,7 +29,7 @@ const products = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$500",
+    price: "500",
     color: "Collateral Art",
   },
   {
@@ -39,7 +39,7 @@ const products = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$1000",
+    price: "1000",
     color: "Collateral Art",
   },
   {
@@ -49,7 +49,7 @@ const products = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$10000",
+    price: "10000",
     color: "Collateral Art",
   },
 
@@ -170,7 +170,7 @@ export default function Marketlist() {
                     </p>
                   </div>
                   <p className="text-sm font-medium text-gray-900">
-                    {product.price}
+                    $ {product.price}
                   </p>
                 </div>
               </div>

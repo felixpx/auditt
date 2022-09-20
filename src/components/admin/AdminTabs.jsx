@@ -1,9 +1,10 @@
 import { useState } from "react";
+import ApplicationTable from "./ApplicationTable";
 // import Account from "./Account";
 // import Collection from "./Collection";
 
 const tabs = [
-  { name: "Admin 1", href: "#", current: true },
+  { name: "Applications", href: "#", current: true },
   { name: "Admin 2", href: "#", current: false },
 ];
 
@@ -12,7 +13,7 @@ function classNames(...classes) {
 }
 
 export default function AdminTabs() {
-  const [selectedTab, setSelectedTab] = useState("Admin 1");
+  const [selectedTab, setSelectedTab] = useState("Applications");
 
   return (
     <div className="bg-white z-50 rounded-xl overflow-y-scroll shadow-xl">
@@ -71,8 +72,9 @@ export default function AdminTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "Admin 1"} className="py-96">
+        <div hidden={selectedTab != "Applications"} className="py-48">
           {/* <DeBridge /> */}
+          <ApplicationTable />
         </div>
 
         {/* COLLECTION ARTICLES */}

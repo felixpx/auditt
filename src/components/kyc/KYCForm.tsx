@@ -3,18 +3,19 @@ import { useMoralis, useMoralisFile } from "react-moralis";
 import Notifications from "../notifications/Notifications";
 
 export default function KYCForm() {
-  const { Moralis } = useMoralis();
+  const { Moralis,user } = useMoralis();
   const { saveFile } = useMoralisFile();
 
   // NOTIFICATIONS functions
   const [notificationTitle, setNotificationTitle] = useState();
   const [notificationDescription, setNotificationDescription] = useState();
   const [dialogType, setDialogType] = useState(1);
-
   const [show, setShow] = useState(false);
   const close = async () => {
     setShow(false);
   };
+
+  
 
   const saveKYC = async (e) => {
     e.preventDefault();
@@ -113,7 +114,7 @@ export default function KYCForm() {
         title={notificationTitle}
         description={notificationDescription}
       />
-
+  
       <div className="md:col-span-1 my-10">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           Information
@@ -128,6 +129,7 @@ export default function KYCForm() {
           <div className="mt-5 md:col-span-2 md:mt-0">
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
+            
                 <label
                   htmlFor="first-name"
                   className="block text-sm font-medium text-gray-700"

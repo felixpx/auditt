@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ProofOfPersonForm from "./ProofOfPersonForm";
+import ProofOfPersonForm from "./ProofOfPersonForm.tsx";
 import KYCForm from "./KYCForm";
 
 const tabs = [

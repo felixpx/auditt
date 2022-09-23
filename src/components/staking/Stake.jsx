@@ -1,5 +1,7 @@
 import Notification from "../Notification/Notification";
-import {  useState } from "react";
+import {  useEffect,useState } from "react";
+import { useMoralis, useMoralisWeb3Api } from "react-moralis";
+import {AuDiTTNFTAddress} from '../../Contracts/AuDiTTNFT'
 
 const products = [
   {
@@ -53,8 +55,44 @@ const products = [
   // More products...
 ];
 export default function Stake() {
-  
+  const {enableWeb3,isWeb3Enabled,user} = useMoralis()
+  const { Web3API } = useMoralisWeb3Api();
+  const [nftBalance,setNFTBalance] = useState(new Map())
+
+
+  useEffect(() => {
+    if (!isWeb3Enabled) enableWeb3();
+
+    //  GET ALL PLAYERS OWNED BY USER
+    const fetchNFTs = async () => {
+      const testnetNFTs = await Web3API.account.getNFTs({
+        chain: "mumbai",
+      });
+      console.log(testnetNFTs)
+      let nfts = new Map()
+      testnetNFTs.result.forEach((nft)=>{
+         if(nft.token_address == AuDiTTNFTAddress.toLowerCase())
+         {
+            nfts[parseInt(nft.token_id)] =parseInt(nft.amount)
+         }
+      })
+      console.log(nfts)
+      setNFTBalance(nfts);
+    }
+     fetchNFTs()
+  },[])
+ 
   const stakeNFT = async (tokenId) =>{
+
+
+    if(nftBalance[tokenId] < 0)
+    {
+      setDialogType(2); //Failed
+      setNotificationTitle("Staking Failed");
+      setNotificationDescription("No tokens available to stake.");
+      setShow(true)
+      return
+    }
     
     try{
           //Smart contract calls goes here
@@ -82,7 +120,8 @@ export default function Stake() {
  const close = async () => {
    setShow(false);
  };
-  return    <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
+  return(   <div> 
+  <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
   {products.map((product) => (
     <div
       onClick={() => stakeNFT(product.id)}
@@ -121,5 +160,5 @@ export default function Stake() {
         title={notificationTitle}
         description={notificationDescription}
       />
-</div>;
+</div></div>);
 }

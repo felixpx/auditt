@@ -44,7 +44,7 @@ export const covalentGetTokenMetadata = async (contractAddress,tokenId) =>{
  export const getUserAuDiTTNFT= async (walletAddress) =>{
     let data=[];     
     await axios.get(`https://api.covalenthq.com/v1/80001/address/${walletAddress}/balances_v2/`,
-     {params:{"quote-currency":"USD",format:"JSON",key:`${process.env.NEXT_PUBLIC_COVALENT_KEY}`,nft:true,"no-nft-fetch":false}})
+     {timeout:50000,params:{"quote-currency":"USD",format:"JSON",key:`${process.env.NEXT_PUBLIC_COVALENT_KEY}`,nft:true,"no-nft-fetch":false}})
      .then((tokens)=>{
         console.log({tokens})
         tokens.data.data.items.forEach((token)=>{
@@ -59,3 +59,45 @@ export const covalentGetTokenMetadata = async (contractAddress,tokenId) =>{
 
     
  }
+
+ export const createLivePeerStream = async (name) =>{
+      const instance = axios.create({
+        baseURL: 'https://livepeer.studio/api/stream',
+
+        headers: {
+          Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_LIVEPEER_API_KEY,
+          'content-type': 'application/json',
+        },
+      })
+
+      const result = await instance.post('/', {
+        name: name,
+        record: false,
+
+        profiles: [
+          {
+            name: '720p',
+            bitrate: 2000000,
+            fps: 30,
+            width: 1280,
+            height: 720,
+          },
+          {
+            name: '480p',
+            bitrate: 1000000,
+            fps: 30,
+            width: 854,
+            height: 480,
+          },
+          {
+            name: '360p',
+            bitrate: 500000,
+            fps: 30,
+            width: 640,
+            height: 360,
+          },
+        ],
+      })
+return result;
+     
+}  

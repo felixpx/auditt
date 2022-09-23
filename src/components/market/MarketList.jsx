@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import PurchaseModal from "../modals/PurchaseModal";
-
+import { useMoralis, useMoralisWeb3Api } from "react-moralis";
+import {AuDiTTNFTAddress} from '../../Contracts/AuDiTTNFT'
+import Notification from "../Notification/Notification";
 const products = [
   {
     id: 1,
@@ -64,6 +66,17 @@ function classNames(...classes) {
 }
 
 export default function Marketlist() {
+  const {enableWeb3,isWeb3Enabled} = useMoralis()
+  const { Web3API } = useMoralisWeb3Api();
+
+  //  NOTIFICATION STATES & FUNCTIONS
+ const [show, setShow] = useState(false);
+ const [notificationTitle, setNotificationTitle] = useState();
+ const [notificationDescription, setNotificationDescription] = useState();
+ const [dialogType, setDialogType] = useState(1);
+ const close = async () => {
+   setShow(false);
+ };
   // TAB SECTION
   const [selectedTab, setSelectedTab] = useState("Auditt Listings");
 
@@ -78,6 +91,8 @@ export default function Marketlist() {
       setOpenPurchase(false);
     }
   }
+
+
   return (
     <div className="bg-white z-50 rounded-xl  shadow-xl">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -143,7 +158,7 @@ export default function Marketlist() {
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
             {products.map((product) => (
               <div
-                onClick={() => buyItem(product.id)}
+                onClick={() => buyAuDiTTNFT(product.id)}
                 key={product.id}
                 className="group relative"
               >
@@ -235,6 +250,13 @@ export default function Marketlist() {
           </div>
         </div>
       </div>
+      <Notification
+        type={dialogType}
+        show={show}
+        close={close}
+        title={notificationTitle}
+        description={notificationDescription}
+      />
     </div>
   );
 }

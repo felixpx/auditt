@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
+import * as EpnsAPI from "@epnsproject/sdk-restapi";
+import Notification from "../Notification/Notification";
 
 export default function Account() {
-  const { user, Moralis, isAuthenticated } = useMoralis();
+  const { isWeb3Enabled,enableWeb3,web3 ,user, Moralis, isAuthenticated } = useMoralis();
 
   const router = useRouter();
   const [profile, setProfile] = useState({
@@ -25,7 +27,83 @@ export default function Account() {
       Sits: "",
     },
   });
+  const [alertState,setAlertState] = useState(( user.get("alertState") == undefined ? 0:user.get("alertState")  ));
+//  NOTIFICATION STATES & FUNCTIONS
+const [show, setShow] = useState(false);
+const [notificationTitle, setNotificationTitle] = useState();
+const [notificationDescription, setNotificationDescription] = useState();
+const [dialogType, setDialogType] = useState(1);
+const close = async () => {
+  setShow(false);
+};
+useEffect( ()=>{
+  if(!isWeb3Enabled)
+  enableWeb3()
+},[])
+ async function subscribe() {
+    if (!isWeb3Enabled) await enableWeb3();
 
+  await EpnsAPI.channels.subscribe({
+    signer:       web3.getSigner(),
+    channelAddress: 'eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335', // channel address in CAIP
+    userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
+    onSuccess: () => {
+      setDialogType(1); //Success
+      setNotificationTitle("Opt in Successful");
+      setNotificationDescription(`You have subscribed to receive messages.`);
+      setShow(true);
+      setAlertState(1)
+      user.set("alertState",1)
+      user.save()
+
+    },
+    onError: () => {
+      setDialogType(2); //Failed
+      setNotificationTitle("Opt in Error");
+      setNotificationDescription(`Error subscribing to messages.`);
+      setShow(true);    },
+    env: 'staging'
+  })
+ }
+
+ async function unsubscribed(){
+  if (!isWeb3Enabled) await  enableWeb3();
+
+  await EpnsAPI.channels.unsubscribe({
+    signer:       web3.getSigner(),
+    channelAddress: 'eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335', // channel address in CAIP
+    userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
+    onSuccess: () => {
+      setDialogType(1); //Success
+      setNotificationTitle("Opt out Successful");
+      setNotificationDescription(`You have unsubscribed from messages.`);
+      setShow(true);
+      setAlertState(2)
+      user.set("alertState",2)
+      user.save()
+
+    },
+    onError: () => {
+      setDialogType(2); //Failed
+      setNotificationTitle("Opt out Error");
+      setNotificationDescription(`Error unsubscribing.`);
+      setShow(true);    },
+    env: 'staging'
+  })
+
+ }
+  async function toggleAlerts(){
+    if(alertState==2 || alertState == 0 )
+     { 
+        await subscribe()
+      }
+      if(alertState==1 )
+      {  
+         await unsubscribed()
+         
+       }
+         
+  }
   function moveToKYC() {
     router.push("/kyc");
   }
@@ -80,6 +158,15 @@ export default function Account() {
                           <h1 className="truncate text-2xl font-bold text-gray-900">
                             {profile.name}
                           </h1>
+                        </div>
+                        <div className=" justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                          <button
+                            onClick={toggleAlerts}
+                           
+                            className={`inline-flex justify-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`}
+                          >
+                            <span>{alertState == 2 ? "AuDiTT OPT In Alerts":"AuDiTT OPT Out Alerts" }</span>
+                          </button>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                           <button
@@ -152,6 +239,13 @@ export default function Account() {
             </main>
           </div>
         </div>
+        <Notification
+        type={dialogType}
+        show={show}
+        close={close}
+        title={notificationTitle}
+        description={notificationDescription}
+      />
       </div>
     </>
   );

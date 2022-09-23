@@ -1,11 +1,14 @@
 import { useState } from "react";
 import ApplicationTable from "./ApplicationTable";
+import SendMessage from "./SendMessage"
 // import Account from "./Account";
 // import Collection from "./Collection";
 
 const tabs = [
   { name: "Applications", href: "#", current: true },
-  { name: "Admin 2", href: "#", current: false },
+  { name: "Artist", href: "#", current: false },
+  { name: "Send Message", href: "#", current: false },
+
 ];
 
 function classNames(...classes) {
@@ -16,7 +19,7 @@ export default function AdminTabs() {
   const [selectedTab, setSelectedTab] = useState("Applications");
 
   return (
-    <div className="bg-white z-50 rounded-xl overflow-y-scroll shadow-xl">
+    <div className="bg-white z-50 rounded-xl  shadow-xl">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
         {/* NAVIGATION INPUT TABS */}
         <div className="sm:hidden">
@@ -78,7 +81,12 @@ export default function AdminTabs() {
         </div>
 
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Admin 2"} className="py-96">
+        <div hidden={selectedTab != "Artist"} className="py-96">
+          {/* <Connext /> */}
+        </div>
+         {/* COLLECTION ARTICLES */}
+         <div hidden={selectedTab != "Send Message"} className="py-2">
+          <SendMessage />
           {/* <Connext /> */}
         </div>
       </div>

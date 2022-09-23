@@ -19,8 +19,8 @@ export default function ApplicationTable() {
 
   useEffect(() => {
     if (!isWeb3Enabled) enableWeb3();
-    const KYC = Moralis.Object.extend("KYC");
-    const query = new Moralis.Query(KYC);
+    const ApprovedTable = Moralis.Object.extend("ApprovedTable");
+    const query = new Moralis.Query(ApprovedTable);
     query.find().then((results) => {
       console.log(results);
       let l = [];
@@ -44,10 +44,11 @@ export default function ApplicationTable() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">
-            Approved Artists
+            KYC Applications
           </h1>
           <p className="mt-2 text-sm text-gray-700">
-            A list of all approved users.
+            A list of all the users applying for KYC including their name,
+            title, email and kyc file.
           </p>
         </div>
       </div>
@@ -104,7 +105,7 @@ export default function ApplicationTable() {
                       !approved && "bg-orange-200"
                     } "font-semibold leading-5 text-green-800"`}
                   >
-                    {!approved ? "Approved" : "Pending"}
+                    {approved ? "Approved" : "Pending"}
                   </span>
                 </td>
                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">

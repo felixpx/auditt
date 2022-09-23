@@ -1,14 +1,12 @@
 import { useState } from "react";
 import ApplicationTable from "./ApplicationTable";
-import SendMessage from "./SendMessage"
-// import Account from "./Account";
-// import Collection from "./Collection";
+import ApprovedTable from "./ApprovedTable";
+import SendMessage from "./SendMessage";
 
 const tabs = [
   { name: "Applications", href: "#", current: true },
   { name: "Artist", href: "#", current: false },
   { name: "Send Message", href: "#", current: false },
-
 ];
 
 function classNames(...classes) {
@@ -76,18 +74,16 @@ export default function AdminTabs() {
 
         {/* AUDITT LISTINGS */}
         <div hidden={selectedTab != "Applications"} className="py-48">
-          {/* <DeBridge /> */}
           <ApplicationTable />
         </div>
 
         {/* COLLECTION ARTICLES */}
         <div hidden={selectedTab != "Artist"} className="py-96">
-          {/* <Connext /> */}
+          <ApprovedTable />
         </div>
-         {/* COLLECTION ARTICLES */}
-         <div hidden={selectedTab != "Send Message"} className="py-2">
+        {/* COLLECTION ARTICLES */}
+        <div hidden={selectedTab != "Send Message"} className="py-2">
           <SendMessage />
-          {/* <Connext /> */}
         </div>
       </div>
     </div>

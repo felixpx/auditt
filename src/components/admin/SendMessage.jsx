@@ -38,7 +38,7 @@ export default function SendMessage() {
 
     try {
       let transaction = await sendEPNSMessage.sendNotification(
-        receipient,
+       receipient,
         title,
         message
       );
@@ -50,8 +50,11 @@ export default function SendMessage() {
     } catch (error) {
       setDialogType(2); //failed
       setNotificationTitle("Failed");
-      setNotificationTitle("Sending Notification failed");
-    }
+      setNotificationDescription(
+        error.data ? error.data.message : error.message
+      );
+      setShow(true);
+        }
   };
 
   return (

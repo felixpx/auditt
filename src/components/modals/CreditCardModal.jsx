@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 
 import { useMoralis } from "react-moralis";
 
-export default function PurchaseModal(props) {
+export default function CreditCardModal(props) {
   const { web3, user } = useMoralis();
   const [open, setOpen] = useState(props.open);
 
@@ -14,13 +14,16 @@ export default function PurchaseModal(props) {
 
   const cancelButtonRef = useRef(null);
 
-  const purchaseItem = async () => {
-    props.purchaseNFT(props.tokenId)
-  };
-
-  const closePurchaseModal = ()=>{
-    props.closePurchaseModal()
+  const closeModal = ()=>{
+    props.closeModal()
   }
+
+ 
+  const purchaseItem = async () => {
+    props.claimTokens(props.tokenId);
+
+   
+  };
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -28,7 +31,7 @@ export default function PurchaseModal(props) {
         as="div"
         className="relative z-50"
         initialFocus={cancelButtonRef}
-        onClose={closePurchaseModal}
+        onClose={closeModal}
       >
         <Transition.Child
           as={Fragment}
@@ -63,10 +66,73 @@ export default function PurchaseModal(props) {
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
-                      Pay with ADTT
+                      Pay with Creditcard
                     </Dialog.Title>
                   </div>
                 </div>
+                <div className="mt-6 grid grid-cols-4 gap-y-6 gap-x-4">
+                <div className="col-span-4">
+                  <label htmlFor="card-number" className="block text-sm font-medium text-gray-700">
+                    Card number
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      id="card-number"
+                      name="card-number"
+                      autoComplete="cc-number"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-4">
+                  <label htmlFor="name-on-card" className="block text-sm font-medium text-gray-700">
+                    Name on card
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      id="name-on-card"
+                      name="name-on-card"
+                      autoComplete="cc-name"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-3">
+                  <label htmlFor="expiration-date" className="block text-sm font-medium text-gray-700">
+                    Expiration date (MM/YY)
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      name="expiration-date"
+                      id="expiration-date"
+                      autoComplete="cc-exp"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="cvc" className="block text-sm font-medium text-gray-700">
+                    CVC
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      name="cvc"
+                      id="cvc"
+                      autoComplete="csc"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            
+          
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   {!approveSale ? (
                     <button
@@ -88,7 +154,7 @@ export default function PurchaseModal(props) {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
-                    onClick={closePurchaseModal}
+                    onClick={closeModal}
                     ref={cancelButtonRef}
                   >
                     Cancel

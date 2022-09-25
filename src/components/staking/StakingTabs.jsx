@@ -11,7 +11,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DashboardTabs() {
+export default function DashboardTabs(props) {
   const [selectedTab, setSelectedTab] = useState("Stake");
 
   return (
@@ -72,12 +72,12 @@ export default function DashboardTabs() {
 
         {/* AUDITT LISTINGS */}
         <div hidden={selectedTab != "Stake"} className="py-9">
-          <Stake />
+          <Stake nftApproval={props.nftApproval} />
         </div>
 
         {/* COLLECTION ARTICLES */}
         <div hidden={selectedTab != "Unstake"} className="py-9">
-          <Unstake />
+          <Unstake approvedADTT={props.approvedADTT}/>
         </div>
       </div>
     </div>

@@ -2,7 +2,8 @@ import Notification from "../Notification/Notification";
 import {  useEffect,useState } from "react";
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import {AuDiTTNFTAddress} from '../../Contracts/AuDiTTNFT'
-
+import { AuDiTTManagerAddress,AuDiTTManagerABI } from "../../Contracts/AuDiTTManagerContract";
+import {ethers} from 'ethers'
 const products = [
   {
     id: 1,
@@ -54,8 +55,8 @@ const products = [
 
   // More products...
 ];
-export default function Stake() {
-  const {enableWeb3,isWeb3Enabled,user} = useMoralis()
+export default function Stake(props) {
+  const {enableWeb3,isWeb3Enabled,user,web3} = useMoralis()
   const { Web3API } = useMoralisWeb3Api();
   const [nftBalance,setNFTBalance] = useState(new Map())
 
@@ -84,7 +85,7 @@ export default function Stake() {
  
   const stakeNFT = async (tokenId) =>{
 
-
+    
     if(nftBalance[tokenId] < 0)
     {
       setDialogType(2); //Failed
@@ -93,9 +94,28 @@ export default function Stake() {
       setShow(true)
       return
     }
-    
+
+    if(props.nftApproval == false)
+    {
+      setDialogType(2); //Failed
+      setNotificationTitle("Staking Failed");
+      setNotificationDescription("NFTs not approved for staking.");
+      setShow(true)
+      return
+    }
+    const managerContract = new ethers.Contract(
+      AuDiTTManagerAddress,
+      AuDiTTManagerABI,
+      web3.getSigner()
+    );
+
     try{
-          //Smart contract calls goes here
+      let transaction = await managerContract.stake(
+       tokenId
+       );
+       await transaction.wait();
+      
+      //Smart contract calls goes here
       setDialogType(1); //Success
       setNotificationTitle("Staking Successful");
       setNotificationDescription(`You have successfully staked your NFT.`);
@@ -121,6 +141,16 @@ export default function Stake() {
    setShow(false);
  };
   return(   <div> 
+      <div className="mb-8 sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Stake NFT
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Stake your AuDiTT NFTs to receive ADTT Tokens
+          </p>
+        </div>
+      </div>
   <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
   {products.map((product) => (
     <div

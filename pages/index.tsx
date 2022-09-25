@@ -10,13 +10,13 @@ const Home: NextPage = () => {
 
   if (!isAuthenticated) return <Landing />;
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="flex min-h-screen overflow-y-auto	 flex-col items-center justify-center">
       <Head>
         <title>Auditt</title>
         <link rel="icon" href="/auditt-full.png" />
       </Head>
 
-      <main className="flex w-full flex-1 overflow-y-scroll flex-col items-center justify-center text-center">
+      <main className="flex w-full flex-1  flex-col items-center justify-center text-center">
         <Main />
       </main>
 

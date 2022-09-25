@@ -1,7 +1,6 @@
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import SaleModal from "../modals/SaleModal";
-import { useMoralis } from "react-moralis";
-import { covalentGetMetadataForContract } from "../../utils/utils";
+
 const products = [
   {
     id: 1,
@@ -45,17 +44,8 @@ const products = [
   },
 ];
 
-export default function Marketlist() {
+export default function NftsList() {
   const [openSale, setOpenSale] = useState(false);
-  const [selected, setSelected] = useState();
-  
-  const [gotCollections, setGotCollections] = useState(false);
-  const [collections, setCollections] = useState([]);
-  const [data,setData] = useState(new Map())
-  const [myListings,setMyListings] =useState(new Map())
-  const [metadata,setMetadata] = useState([])
-  
-  const { Moralis, isWeb3Enabled, enableWeb3,user } = useMoralis();
 
   const [tokenId, setTokenId] = useState();
   function sellItem(id) {
@@ -65,79 +55,8 @@ export default function Marketlist() {
       setOpenSale(false);
     }
   }
-  const handleChange = (event) => {
-    setSelected(event.target.value);
-  };
-
-  //Get My Collections
-  useEffect(() => {
-    const Collection = Moralis.Object.extend("Collection");
-    const query = new Moralis.Query(Collection);
-    query.ascending("name");
-    query.equalTo("owner",user.get("ethAddress").toLowerCase())
-    query.find().then((results) => {
-      setCollections(results);
-      let d = new Map()
-      results.forEach(async(result)=>{
-        d[result.id] = result;
-
-      })
-      setData(d);
- 
-      setGotCollections(true);
-      setSelected(results[0].id);
-    });
-  }, []);
-  
-  //Get My NFT Listings in Market Place
-  useEffect(() => {
-    if (gotCollections) {
-      const MarketPlace = Moralis.Object.extend("MarketPlace");
-      const query = new Moralis.Query(MarketPlace);
-      query.equalTo("seller", user.get("ethAddress").toLowerCase());
-      query.equalTo("completed",false);
-      query.find().then((results) => {
-        let p = new Map();
-               results.forEach((result) => {
-          p[result.id]=true;
-                });
-        setMyListings(p);
-        
-      });
-    }
-  }, [selected]);
-
-
-  //Get
-  useEffect(() => {
-    async function getMetadata()
-    {
-       if (gotCollections) {
-    
-          const results = await covalentGetMetadataForContract(data[selected].get("contractAddress"))
-          console.log(results)
-         alert(`${data[selected].get("contractAddress")}  `)
-         alert(JSON.stringify(results))
-       }
-   }
-   getMetadata()
-  }, [selected]);
-
   return (
     <div className="bg-white z-50 rounded-xl overflow-y-scroll">
-       <select
-        id="collection"
-        value={selected}
-        onChange={handleChange}
-        name="country"
-        autoComplete="collection-name"
-        className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
-      >
-        {collections.map((collection, index) => (
-          <option value={collection.id}>{collection.get("name")}</option>
-        ))}
-      </select>
-     
       <div className="mx-auto max-w-2xl py-8 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
         {openSale && <SaleModal tokenId={tokenId} />}
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

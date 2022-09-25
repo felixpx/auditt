@@ -1,5 +1,9 @@
 import Notification from "../Notification/Notification";
-import {  useState } from "react";
+import {  useEffect,useState } from "react";
+import { useMoralis } from "react-moralis";
+import {AuDiTTNFTAddress} from '../../Contracts/AuDiTTNFT'
+import { AuDiTTManagerAddress,AuDiTTManagerABI } from "../../Contracts/AuDiTTManagerContract";
+import {ethers} from 'ethers'
 
 const products = [
   {
@@ -52,11 +56,32 @@ const products = [
 
   // More products...
 ];
-export default function UnStake() {
+export default function UnStake(props) {
+
+
+ 
   
   const unstakeNFT = async (tokenId) =>{
-    
+
+    if(props.approvedADTT == false)
+    {
+      setDialogType(2); //Failed
+      setNotificationTitle("Unstaking Failed");
+      setNotificationDescription("ADTT not approved.");
+      setShow(true)
+      return
+    }
+    const managerContract = new ethers.Contract(
+      AuDiTTManagerAddress,
+      AuDiTTManagerABI,
+      web3.getSigner()
+    );
     try{
+
+      let transaction = await managerContract.unstake(
+        tokenId
+        );
+        await transaction.wait();
           //Smart contract calls goes here
       setDialogType(1); //Success
       setNotificationTitle("Unstaking Successful");
@@ -73,7 +98,8 @@ export default function UnStake() {
       setShow(true);
     }
     }
-  
+    const {web3} = useMoralis()
+
  //  NOTIFICATION STATES & FUNCTIONS
  const [show, setShow] = useState(false);
  const [notificationTitle, setNotificationTitle] = useState();
@@ -82,7 +108,18 @@ export default function UnStake() {
  const close = async () => {
    setShow(false);
  };
-  return    <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
+  return   <div> 
+     <div className="mb-8 sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Unstake NFT
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Unstake AuDiTT NFTs to burn ADTT for Off ramping 
+          </p>
+        </div>
+      </div>
+    <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
   {products.map((product) => (
     <div
       onClick={() => unstakeNFT(product.id)}
@@ -121,5 +158,5 @@ export default function UnStake() {
         title={notificationTitle}
         description={notificationDescription}
       />
-</div>;
+</div></div>;
 }

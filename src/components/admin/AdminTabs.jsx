@@ -73,16 +73,16 @@ export default function AdminTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "Applications"} className="py-48">
+        <div hidden={selectedTab != "Applications"} className="py-8">
           <ApplicationTable />
         </div>
 
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Artist"} className="py-96">
+        <div hidden={selectedTab != "Artist"} className="py-8">
           <ApprovedTable />
         </div>
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Send Message"} className="py-2">
+        <div hidden={selectedTab != "Send Message"} className="py-8">
           <SendMessage />
         </div>
       </div>

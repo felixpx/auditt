@@ -35,7 +35,6 @@ export default function SendMessage() {
       web3.getSigner()
     );
     console.log("tell me more x2");
-
     try {
       let transaction = await sendEPNSMessage.sendNotification(
        receipient,
@@ -44,8 +43,8 @@ export default function SendMessage() {
       );
       await transaction.wait();
       setDialogType(1); //Success
-      setNotificationTitle("Purchase Player Successful");
-      setNotificationDescription(`Your purchase was successful.`);
+      setNotificationTitle("Send Message");
+      setNotificationDescription(`Your message was sent successfully.`);
       setShow(true);
     } catch (error) {
       setDialogType(2); //failed
@@ -58,8 +57,17 @@ export default function SendMessage() {
   };
 
   return (
-    <div className="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12">
-      <div className="mx-auto max-w-lg lg:max-w-none">
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Send Message
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Send users messages via EPNS.
+          </p>
+        </div>
+      <div className="mt-8 mx-auto max-w-lg lg:max-w-none">
+     
         <form action="#" method="POST" className="grid grid-cols-1 gap-y-6">
           <div>
             <label htmlFor="full-name" className="sr-only">

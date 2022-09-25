@@ -19,7 +19,9 @@ export const covalentGetTokenMetadata = async (contractAddress,tokenId) =>{
        {params:{"quote-currency":"USD",format:"JSON",key:`${process.env.NEXT_PUBLIC_COVALENT_KEY}`}})
        .then((tokens)=>{
           if(tokens.data.data.items[0]?.nft_data != undefined)
-          data = {address:tokens.data.data.items[0].contract_address,symbol:tokens.data.data.items[0].contract_ticker_symbol,tokenId:tokenId,name:tokens.data.data.items[0].contract_name,metadata:tokens.data.data.items[0]?.nft_data[0]?.external_data};
+          data = {address:tokens.data.data.items[0].contract_address,symbol:tokens.data.data.items[0].contract_ticker_symbol,tokenId:tokenId,
+            name:tokens.data.data.items[0].contract_name
+            ,metadata:tokens.data.data.items[0]?.nft_data[0]?.external_data};
        })
  
        return data;
@@ -29,6 +31,7 @@ export const covalentGetTokenMetadata = async (contractAddress,tokenId) =>{
  export const covalentGetMetadataForContract = async (contractAddress) =>{
     const tokens = await covalentGetTokenIds(contractAddress);
     let metadata = [];
+    return tokens;
      tokens.forEach(async (token)=>{
         console.log(token.token_id);     
        if(token.token_id != undefined)

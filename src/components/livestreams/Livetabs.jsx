@@ -71,9 +71,9 @@ export default function BridgeTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "View"} className="py-24">
+        <div hidden={selectedTab != "Live"} className="py-24">
           {/* <DeBridge /> */}
-          {/* <ViewPage /> */}
+          <ViewPage />
         </div>
 
         {/* COLLECTION ARTICLES */}

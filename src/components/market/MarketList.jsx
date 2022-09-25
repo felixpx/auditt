@@ -1,14 +1,20 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import CreditCardModal from "../modals/CreditCardModal";
 import PurchaseModal from "../modals/PurchaseModal";
 
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
-import {AuDiTTNFTAddress} from '../../Contracts/AuDiTTNFT'
-import { AuDiTTManagerAddress,AuDiTTManagerABI } from "../../Contracts/AuDiTTManagerContract";
-import {MarketPlaceAddress,MarketPlaceABI} from '../../Contracts/MarketplaceContract'
-import {ethers} from 'ethers'
+import { AuDiTTNFTAddress } from "../../Contracts/AuDiTTNFT";
+import {
+  AuDiTTManagerAddress,
+  AuDiTTManagerABI,
+} from "../../Contracts/AuDiTTManagerContract";
+import {
+  MarketPlaceAddress,
+  MarketPlaceABI,
+} from "../../Contracts/MarketplaceContract";
+import { ethers } from "ethers";
 import Notification from "../Notification/Notification";
-import {covalentGetTokenMetadata} from '../../utils/utils'
+import { covalentGetTokenMetadata } from "../../utils/utils";
 const products = [
   {
     id: 1,
@@ -65,7 +71,7 @@ const tabs = [
   { name: "AuDiTT Listings", href: "#", current: true },
   { name: "NFT Listing", href: "#", current: false },
 
-  { name: "Collections", href: "#", current: false }
+  { name: "Collections", href: "#", current: false },
 ];
 
 function classNames(...classes) {
@@ -73,99 +79,100 @@ function classNames(...classes) {
 }
 
 export default function Marketlist(props) {
-  const {enableWeb3,isWeb3Enabled,web3,Moralis} = useMoralis()
+  const { enableWeb3, isWeb3Enabled, web3, Moralis } = useMoralis();
   const { Web3API } = useMoralisWeb3Api();
 
-  const [collections,setCollections] = useState([])
-  const [marketPlace,setMarketPlace] = useState([])
+  const [collections, setCollections] = useState([]);
+  const [marketPlace, setMarketPlace] = useState([]);
 
   //  NOTIFICATION STATES & FUNCTIONS
- const [show, setShow] = useState(false);
- const [notificationTitle, setNotificationTitle] = useState();
- const [notificationDescription, setNotificationDescription] = useState();
- const [dialogType, setDialogType] = useState(1);
- const close = async () => {
-   setShow(false);
- };
+  const [show, setShow] = useState(false);
+  const [notificationTitle, setNotificationTitle] = useState();
+  const [notificationDescription, setNotificationDescription] = useState();
+  const [dialogType, setDialogType] = useState(1);
+  const close = async () => {
+    setShow(false);
+  };
   // TAB SECTION
   const [selectedTab, setSelectedTab] = useState("AuDiTT Listings");
 
   // LISTING SECTION
   const [openPurchase, setOpenPurchase] = useState(false);
-  const [openCreditCard,setOpenCreditCard] = useState(false)
+  const [openCreditCard, setOpenCreditCard] = useState(false);
   const [tokenId, setTokenId] = useState();
-  const [listingId,setListingId] = useState()
- //Get Collections
- useEffect(()=>{
+  const [listingId, setListingId] = useState();
+  //Get Collections
+  useEffect(() => {
     const Collection = Moralis.Object.extend("Collection");
-    const query = new Moralis.Query(Collection)
-    query.find().then((results)=>{
-         setCollections(results)
-         console.log(results)
-    })
-
- },[])
-
+    const query = new Moralis.Query(Collection);
+    query.find().then((results) => {
+      setCollections(results);
+      console.log(results);
+    });
+  }, []);
 
   //Get MarketPlace Listing
-  useEffect(()=>{
+  useEffect(() => {
     const MarketPlace = Moralis.Object.extend("MarketPlace");
-    const query = new Moralis.Query(MarketPlace)
-    query.equalTo("completed",false);
-    query.find().then((results)=>{
+    const query = new Moralis.Query(MarketPlace);
+    query.equalTo("completed", false);
+    query.find().then((results) => {
       let nfts = [];
-      results.forEach(async (result)=>{
-        const metadata = await covalentGetTokenMetadata("0xcC45d6e2635eE872D38c156986abFA272c4e95Ed",result.get("tokenId"))
-         nfts.push({id:result.id,collection:metadata.name,name:metadata.metadata.name,symbol:metadata.symbol,image:metadata.image,listingId:result.get("listingId"),price:result.get("pricePerToken")})
-        })
-         setMarketPlace(nfts)
-         console.log(results)
-    })
-
- },[])
+      results.forEach(async (result) => {
+        const metadata = await covalentGetTokenMetadata(
+          "0xcC45d6e2635eE872D38c156986abFA272c4e95Ed",
+          result.get("tokenId")
+        );
+        nfts.push({
+          id: result.id,
+          collection: metadata.name,
+          name: metadata.metadata.name,
+          symbol: metadata.symbol,
+          image: metadata.image,
+          listingId: result.get("listingId"),
+          price: result.get("pricePerToken"),
+        });
+      });
+      setMarketPlace(nfts);
+      console.log(results);
+    });
+  }, []);
   function buyItem(id) {
     setOpenPurchase(true);
     setListingId(id);
-   
   }
 
-  async function buyAuDiTTNFT(id){
-    setTokenId(id)
-    setOpenCreditCard(true)
+  async function buyAuDiTTNFT(id) {
+    setTokenId(id);
+    setOpenCreditCard(true);
   }
 
-  
-  const closePurchaseModal = () =>{
-    setOpenPurchase(false)
-    
-  }
-  const closeModal = () =>{
-    setOpenCreditCard(false)
-    
-  }
+  const closePurchaseModal = () => {
+    setOpenPurchase(false);
+  };
+  const closeModal = () => {
+    setOpenCreditCard(false);
+  };
 
-  const claimTokens = async (id) =>{
+  const claimTokens = async (id) => {
     const managerContract = new ethers.Contract(
       AuDiTTManagerAddress,
       AuDiTTManagerABI,
       web3.getSigner()
     );
 
-    try{
-      let transaction = await managerContract.claimToken(
-       id,{gasLimit:300000}
-       );
-       await transaction.wait();
-      
+    try {
+      let transaction = await managerContract.claimToken(id, {
+        gasLimit: 300000,
+      });
+      await transaction.wait();
+
       setDialogType(1); //Success
       setNotificationTitle("Token Purchase Successful");
       setNotificationDescription(`You have successfully purchased an NFT.`);
       setShow(true);
-      setOpenCreditCard(false)
-
-    }
-    catch(error)
-    {
+      setOpenCreditCard(false);
+    } catch (error) {
       setDialogType(2); //Failed
       setNotificationTitle("Token Purchase Failed");
       setNotificationDescription(
@@ -173,20 +180,15 @@ export default function Marketlist(props) {
       );
       setShow(true);
     }
-  }
+  };
 
-  
-
-  const purchaseNFT = async () =>{
-
-
-    if(props.approvedADTT == false)
-    {
+  const purchaseNFT = async () => {
+    if (props.approvedADTT == false) {
       setDialogType(2); //Failed
       setNotificationTitle("Purchase Failed");
       setNotificationDescription("ADTT not approved.");
-      setShow(true)
-      return
+      setShow(true);
+      return;
     }
     const marketPlaceContract = new ethers.Contract(
       MarketPlaceAddress,
@@ -194,32 +196,29 @@ export default function Marketlist(props) {
       web3.getSigner()
     );
 
-    try{
-      let transaction = await marketPlaceContract.purchaseToken(
-       listingId,{gasLimit:300000}
-       );
-       await transaction.wait();
-      
+    try {
+      let transaction = await marketPlaceContract.purchaseToken(listingId, {
+        gasLimit: 300000,
+      });
+      await transaction.wait();
+
       setDialogType(1); //Success
       setNotificationTitle("Token Purchase Successful");
       setNotificationDescription(`You have successfully purchased an NFT.`);
       setShow(true);
-      setOpenPurchase(false)
-
-    }
-    catch(error)
-    {
+      setOpenPurchase(false);
+    } catch (error) {
       setDialogType(2); //Failed
       setNotificationTitle("Token Purchase Failed");
-      setNotificationDescription(error.data ? error.data.message : error.message
-
+      setNotificationDescription(
+        error.data ? error.data.message : error.message
       );
-      console.log(error)
-      alert(JSON.stringify(error.data.message))
+      console.log(error);
+      alert(JSON.stringify(error.data.message));
 
       setShow(true);
     }
-  }
+  };
   return (
     <div className="bg-white z-50 rounded-xl  shadow-xl">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -281,7 +280,12 @@ export default function Marketlist(props) {
 
         {/* AUDITT LISTINGS */}
         <div hidden={selectedTab != "AuDiTT Listings"} className="py-32">
-          <CreditCardModal tokenId={tokenId} open={openCreditCard} claimTokens={claimTokens} closeModal={closeModal}/>
+          <CreditCardModal
+            tokenId={tokenId}
+            open={openCreditCard}
+            claimTokens={claimTokens}
+            closeModal={closeModal}
+          />
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
             {products.map((product) => (
               <div
@@ -316,10 +320,14 @@ export default function Marketlist(props) {
             ))}
           </div>
         </div>
-  {/* NFT Listing */}
-  <div hidden={selectedTab != "NFT Listing"} className="py-16">
-        <PurchaseModal listingId={listingId} purchaseNFT={purchaseNFT} open={openPurchase} closePurchaseModal={closePurchaseModal}/>
-         
+        {/* NFT Listing */}
+        <div hidden={selectedTab != "NFT Listing"} className="py-16">
+          <PurchaseModal
+            listingId={listingId}
+            purchaseNFT={purchaseNFT}
+            open={openPurchase}
+            closePurchaseModal={closePurchaseModal}
+          />
 
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
             {marketPlace.map((nft) => (
@@ -348,14 +356,12 @@ export default function Marketlist(props) {
                         {nft.name}
                       </a>
                     </h3>
-                  
-                    <p className="mt-1 text-xs text-gray-500">
-                      {nft.symbol}
-                    </p>
+
+                    <p className="mt-1 text-xs text-gray-500">{nft.symbol}</p>
                   </div>
                   <p className="mt-1 text-xs text-gray-500">
-                      {`${ethers.utils.formatEther(nft.price)} ADTT`}
-                    </p>
+                    {`${ethers.utils.formatEther(nft.price)} ADTT`}
+                  </p>
                 </div>
               </div>
             ))}
@@ -363,8 +369,6 @@ export default function Marketlist(props) {
         </div>
         {/* COLLECTION ARTICLES */}
         <div hidden={selectedTab != "Collections"} className="py-16">
-         
-
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
             {collections.map((collection) => (
               <div
@@ -375,7 +379,6 @@ export default function Marketlist(props) {
                 <div className="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                   <img
                     src="https://images.unsplash.com/photo-1500628550463-c8881a54d4d4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80"
-                    
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                   />
                 </div>
@@ -397,7 +400,6 @@ export default function Marketlist(props) {
                       {collection.get("symbol")}
                     </p>
                   </div>
-                  
                 </div>
               </div>
             ))}

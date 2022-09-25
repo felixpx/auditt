@@ -29,43 +29,50 @@ export default function CreateCollection(props) {
     setShow(false);
   };
 
+  const [nftstorage] = useState(
+    new NFTStorage({
+      token: process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY,
+    })
+  );
+
   const mintNFT = async () => {
     const title = document.getElementById("title").value;
     const description = document.getElementById("desc").value;
-    const file = document.getElementById("desc").files[0];
+    const file = document.getElementById("file-upload").files[0];
 
     // const NFTs = Moralis.Object.extend("NFTs");
     // const nfts = new NFTs();
 
-    // let ipfsFile = "";
-
+    alert("text");
+    let ipfsFile = "";
     if (file) {
       console.log("uploading file");
       await saveFile("file", file, { saveIPFS: true }).then(async (hash) => {
         ipfsFile = hash._ipfs;
       });
     }
-
-    const metadata = await nftstorage.store({
-      name: title,
-      description: description,
-      image: ipfsFile,
-    });
+    alert("text2");
 
     try {
+      const metadata = await nftstorage.store({
+        name: title,
+        description: description,
+        image: ipfsFile,
+      });
+
+      alert(metadata.url);
+
       const AudittManager = new ethers.Contract(
         AuDiTTManagerAddress,
         AuDiTTManagerABI,
         web3.getSigner()
       );
-      let transaction = await AudittManager
-        .mint
-        // fill
-        // contract address
-        // string name
-        // string cid
-        // string description
-        ();
+      let transaction = await AudittManager.mint(
+        "0x4cf41b71225d04a2cacd5ee5ae0ca1798b63ab86",
+        title,
+        metadata.url,
+        description
+      );
       const receipt = await transaction.wait();
       setDialogType(1); //Success
       setNotificationTitle("minted nft ");
@@ -80,13 +87,6 @@ export default function CreateCollection(props) {
       setShow(true);
     }
   };
-
-  const [nftstorage] = useState(
-    new NFTStorage({
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM1OTMyM2U4OTZkMTUwMjAxRkFkODQ1MzE4RTZjOWM1NDkyRjEwN2YiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzMzM2ODk0OTI1OSwibmFtZSI6IlVuc3RvcHBhYmxlIFN0cmVhbXMifQ.aaXjhUhPFhOYQxdWeaQE0PV2chNvwWEYm9sVAppe4zY",
-    })
-  );
 
   return (
     <Transition.Root show={open} as={Fragment}>

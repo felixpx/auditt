@@ -44,24 +44,18 @@ export default function StreamPage() {
         user.get("stream") == "{}" ||
         user.get("stream") == "undefined"
       ) {
-        const livepeer = createLivePeerStream("Artist Live Stream");
-        // alert(JSON.stringify(livepeer));
-        user.set("stream", JSON.stringify(livepeer));
+        const livepeer = await createLivePeerStream("Artist Live Stream");
+        user.set("stream", JSON.stringify(livepeer.data));
         user.save();
-        alert(livepeer);
-        setLivepeerStreamObject(livepeer);
+        // alert(livepeer);
+        setLivepeerStreamObject(livepeer.data);
       } else {
-        alert("text");
+        // alert("text");
         setLivepeerStreamObject(JSON.parse(user.get("stream")));
       }
     }
     getLivePeer();
   }, []);
-  //  USE EFFECT
-
-  // useEffect(() => {
-  //   setLivepeerStreamObject(JSON.parse(user.get("stream")));
-  // }, []);
 
   const streamButtonClicked = async () => {
     if (!isLive) {

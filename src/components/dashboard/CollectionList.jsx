@@ -129,7 +129,7 @@ export default function Marketlist() {
     async function getMetadata() {
       if (gotCollections) {
         const results = await covalentGetMetadataForContract(
-          data[selected].get("contractAddress")
+          "0x4cf41b71225d04a2cacd5ee5ae0ca1798b63ab86"
         );
         console.log(results);
         // alert(`${data[selected].get("contractAddress")}  `);

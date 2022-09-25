@@ -5,7 +5,8 @@ import * as EpnsAPI from "@epnsproject/sdk-restapi";
 import Notification from "../Notification/Notification";
 
 export default function Account() {
-  const { isWeb3Enabled,enableWeb3,web3 ,user, Moralis, isAuthenticated } = useMoralis();
+  const { isWeb3Enabled, enableWeb3, web3, user, Moralis, isAuthenticated } =
+    useMoralis();
 
   const router = useRouter();
   const [profile, setProfile] = useState({
@@ -27,82 +28,78 @@ export default function Account() {
       Sits: "",
     },
   });
-  const [alertState,setAlertState] = useState(( user.get("alertState") == undefined ? 0:user.get("alertState")  ));
-//  NOTIFICATION STATES & FUNCTIONS
-const [show, setShow] = useState(false);
-const [notificationTitle, setNotificationTitle] = useState();
-const [notificationDescription, setNotificationDescription] = useState();
-const [dialogType, setDialogType] = useState(1);
-const close = async () => {
-  setShow(false);
-};
-useEffect( ()=>{
-  if(!isWeb3Enabled)
-  enableWeb3()
-},[])
- async function subscribe() {
+  const [alertState, setAlertState] = useState(
+    user.get("alertState") == undefined ? 0 : user.get("alertState")
+  );
+  //  NOTIFICATION STATES & FUNCTIONS
+  const [show, setShow] = useState(false);
+  const [notificationTitle, setNotificationTitle] = useState();
+  const [notificationDescription, setNotificationDescription] = useState();
+  const [dialogType, setDialogType] = useState(1);
+  const close = async () => {
+    setShow(false);
+  };
+  useEffect(() => {
+    if (!isWeb3Enabled) enableWeb3();
+  }, []);
+  async function subscribe() {
     if (!isWeb3Enabled) await enableWeb3();
 
-  await EpnsAPI.channels.subscribe({
-    signer:       web3.getSigner(),
-    channelAddress: 'eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335', // channel address in CAIP
-    userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
-    onSuccess: () => {
-      setDialogType(1); //Success
-      setNotificationTitle("Opt in Successful");
-      setNotificationDescription(`You have subscribed to receive messages.`);
-      setShow(true);
-      setAlertState(1)
-      user.set("alertState",1)
-      user.save()
+    await EpnsAPI.channels.subscribe({
+      signer: web3.getSigner(),
+      channelAddress: "eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335", // channel address in CAIP
+      userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
+      onSuccess: () => {
+        setDialogType(1); //Success
+        setNotificationTitle("Opt in Successful");
+        setNotificationDescription(`You have subscribed to receive messages.`);
+        setShow(true);
+        setAlertState(1);
+        user.set("alertState", 1);
+        user.save();
+      },
+      onError: () => {
+        setDialogType(2); //Failed
+        setNotificationTitle("Opt in Error");
+        setNotificationDescription(`Error subscribing to messages.`);
+        setShow(true);
+      },
+      env: "staging",
+    });
+  }
 
-    },
-    onError: () => {
-      setDialogType(2); //Failed
-      setNotificationTitle("Opt in Error");
-      setNotificationDescription(`Error subscribing to messages.`);
-      setShow(true);    },
-    env: 'staging'
-  })
- }
+  async function unsubscribed() {
+    if (!isWeb3Enabled) await enableWeb3();
 
- async function unsubscribed(){
-  if (!isWeb3Enabled) await  enableWeb3();
-
-  await EpnsAPI.channels.unsubscribe({
-    signer:       web3.getSigner(),
-    channelAddress: 'eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335', // channel address in CAIP
-    userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
-    onSuccess: () => {
-      setDialogType(1); //Success
-      setNotificationTitle("Opt out Successful");
-      setNotificationDescription(`You have unsubscribed from messages.`);
-      setShow(true);
-      setAlertState(2)
-      user.set("alertState",2)
-      user.save()
-
-    },
-    onError: () => {
-      setDialogType(2); //Failed
-      setNotificationTitle("Opt out Error");
-      setNotificationDescription(`Error unsubscribing.`);
-      setShow(true);    },
-    env: 'staging'
-  })
-
- }
-  async function toggleAlerts(){
-    if(alertState==2 || alertState == 0 )
-     { 
-        await subscribe()
-      }
-      if(alertState==1 )
-      {  
-         await unsubscribed()
-         
-       }
-         
+    await EpnsAPI.channels.unsubscribe({
+      signer: web3.getSigner(),
+      channelAddress: "eip155:80001:0xad261Af4cD895D6f7940D1B86cC849e01d3Af335", // channel address in CAIP
+      userAddress: `eip155:80001:${user.get("ethAddress")}`, // user address in CAIP
+      onSuccess: () => {
+        setDialogType(1); //Success
+        setNotificationTitle("Opt out Successful");
+        setNotificationDescription(`You have unsubscribed from messages.`);
+        setShow(true);
+        setAlertState(2);
+        user.set("alertState", 2);
+        user.save();
+      },
+      onError: () => {
+        setDialogType(2); //Failed
+        setNotificationTitle("Opt out Error");
+        setNotificationDescription(`Error unsubscribing.`);
+        setShow(true);
+      },
+      env: "staging",
+    });
+  }
+  async function toggleAlerts() {
+    if (alertState == 2 || alertState == 0) {
+      await subscribe();
+    }
+    if (alertState == 1) {
+      await unsubscribed();
+    }
   }
   function moveToKYC() {
     router.push("/kyc");
@@ -112,6 +109,9 @@ useEffect( ()=>{
     if (isAuthenticated && user) {
       setProfile({
         name: user.id,
+        name2:
+          user.get("ethAddress").slice(0, 6).concat("...") +
+          user.get("ethAddress").slice(38, 42),
         imageUrl: "/auditt-full.png",
         coverImageUrl: "/auditt-header.png",
 
@@ -155,17 +155,20 @@ useEffect( ()=>{
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                          <h1 className="truncate text-2xl font-bold text-gray-900">
-                            {profile.name}
+                          <h1 className="truncate text-base font-bold text-gray-900">
+                            {profile.name2}
                           </h1>
                         </div>
                         <div className=" justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                           <button
                             onClick={toggleAlerts}
-                           
                             className={`inline-flex justify-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`}
                           >
-                            <span>{alertState == 2 ? "AuDiTT OPT In Alerts":"AuDiTT OPT Out Alerts" }</span>
+                            <span>
+                              {alertState == 2
+                                ? "AuDiTT OPT In Alerts"
+                                : "AuDiTT OPT Out Alerts"}
+                            </span>
                           </button>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -176,10 +179,22 @@ useEffect( ()=>{
                             <span>KYC</span>
                           </button>
                         </div>
+                        <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                          <button
+                            onClick={() => {
+                              router.push(
+                                "https://staging.epns.io/#/dashboard"
+                              );
+                            }}
+                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                          >
+                            <span>EPNS INBOX</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
-                      <h1 className="truncate text-2xl font-bold text-gray-900">
+                      <h1 className="truncate text-base text-gray-900">
                         {profile.name}
                       </h1>
                     </div>
@@ -213,7 +228,7 @@ useEffect( ()=>{
 
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8">
-                  <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                  {/* <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                     {Object.keys(profile.fields).map((field) => (
                       <div key={field} className="sm:col-span-1">
                         <dt className="text-sm font-medium text-gray-500">
@@ -224,28 +239,20 @@ useEffect( ()=>{
                         </dd>
                       </div>
                     ))}
-                    {/* <div className="sm:col-span-2">
-                      <dt className="text-sm font-medium text-gray-500">
-                        About
-                      </dt>
-                      <dd
-                        className="mt-1 max-w-prose space-y-5 text-sm text-gray-900"
-                        dangerouslySetInnerHTML={{ __html: profile.about }}
-                      />
-                    </div> */}
-                  </dl>
+            
+                  </dl> */}
                 </div>
               </article>
             </main>
           </div>
         </div>
         <Notification
-        type={dialogType}
-        show={show}
-        close={close}
-        title={notificationTitle}
-        description={notificationDescription}
-      />
+          type={dialogType}
+          show={show}
+          close={close}
+          title={notificationTitle}
+          description={notificationDescription}
+        />
       </div>
     </>
   );

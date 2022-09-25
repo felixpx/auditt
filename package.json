@@ -17,6 +17,7 @@
     "ethers": "^5.7.1",
     "moralis": "1.11.0",
     "next": "latest",
+    "nft.storage": "^7.0.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-moralis": "1.4.0",

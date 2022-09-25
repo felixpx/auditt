@@ -6,6 +6,7 @@ import Market from "./market/Market";
 import Dashboard from "./dashboard/Dashboard";
 import Bridge from "./bridge/Bridge";
 import Staking from "./staking/Staking";
+import Livestreams from "./livestreams/Livestreams";
 import { useRouter } from "next/router";
 
 const user = {
@@ -18,6 +19,7 @@ const navigation = [
   { name: "Dashboard", href: "#", current: false },
   { name: "Bridge", href: "#", current: false },
   { name: "Staking", href: "#", current: false },
+  { name: "Livestreams", href: "#", current: false },
 ];
 const userNavigation = [{ name: "Sign out", href: "#" }];
 
@@ -222,6 +224,9 @@ export default function Main() {
           <div hidden={selectedTab != "Staking"}>
             <Header selectedTab={selectedTab} />
           </div>
+          <div hidden={selectedTab != "Livestreams"}>
+            <Header selectedTab={selectedTab} />
+          </div>
         </div>
 
         <div hidden={selectedTab != "Market"}>
@@ -235,6 +240,9 @@ export default function Main() {
         </div>
         <div hidden={selectedTab != "Staking"}>
           <Staking />
+        </div>
+        <div hidden={selectedTab != "Livestreams"}>
+          <Livestreams />
         </div>
       </div>
     </>

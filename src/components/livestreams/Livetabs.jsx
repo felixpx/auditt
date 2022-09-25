@@ -1,22 +1,21 @@
 import { useState } from "react";
-import Account from "./Account";
-import Collection from "./Collection";
-import Nfts from "./NFTs";
+import StreamPage from "../video/StreamPage";
+import ViewPage from "../video/ViewPage";
+
 const tabs = [
-  { name: "Account", href: "#", current: true },
-  { name: "Create", href: "#", current: false },
-  { name: "My NFTs", href: "#", current: false },
+  { name: "Live", href: "#", current: true },
+  { name: "Stream", href: "#", current: false },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DashboardTabs() {
-  const [selectedTab, setSelectedTab] = useState("Account");
+export default function BridgeTabs() {
+  const [selectedTab, setSelectedTab] = useState("Live");
 
   return (
-    <div className="bg-white z-50 rounded-xl  shadow-xl">
+    <div className="bg-white z-50 rounded-xl shadow-xl">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
         {/* NAVIGATION INPUT TABS */}
         <div className="sm:hidden">
@@ -72,18 +71,14 @@ export default function DashboardTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "Account"} className="py-24">
-          <Account />
+        <div hidden={selectedTab != "DeBridge"} className="py-24">
+          {/* <DeBridge /> */}
+          <ViewPage />
         </div>
 
-        {/* COLLECTION Listing */}
-        <div hidden={selectedTab != "Create"} className="py-16">
-          <Collection />
-        </div>
-
-        {/* My NFT Listing */}
-        <div hidden={selectedTab != "My NFTs"} className="py-16">
-          <Nfts />
+        {/* COLLECTION ARTICLES */}
+        <div hidden={selectedTab != "Connext"} className="py-96">
+          <StreamPage />
         </div>
       </div>
     </div>

@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import SaleModal from "../modals/SaleModal";
 import { useMoralis } from "react-moralis";
 import { covalentGetMetadataForContract } from "../../utils/utils";
+import CreateCollectionModal from "../modals/CreateCollection";
+import MintNFT from "../modals/MintNFT";
+
 const products = [
   {
     id: 1,
@@ -69,6 +72,22 @@ export default function Marketlist() {
     setSelected(event.target.value);
   };
 
+  const [openCreateCollection, setOpenCreateCollection] = useState();
+  const [openMintNFT, setOpenMintNFT] = useState();
+
+  const createCollection = async () => {
+    if (!openCreateCollection) setOpenCreateCollection(true);
+    else {
+      setOpenCreateCollection(false);
+    }
+  };
+  const mintNFT = async () => {
+    if (!openMintNFT) setOpenMintNFT(true);
+    else {
+      setOpenMintNFT(false);
+    }
+  };
+
   //Get My Collections
   useEffect(() => {
     const Collection = Moralis.Object.extend("Collection");
@@ -120,13 +139,6 @@ export default function Marketlist() {
     getMetadata();
   }, [selected]);
 
-  function createCollection() {
-    // pop up modal create collection
-  }
-  function mintNFT() {
-    // pop up modal create collection
-  }
-
   return (
     <div className="bg-white z-50 rounded-xl overflow-y-scroll">
       <div className="flex flex-row items-center justify-evenly">
@@ -155,6 +167,8 @@ export default function Marketlist() {
           Mint NFT
         </button>
       </div>
+      {openCreateCollection && <CreateCollectionModal />}
+      {openMintNFT && <MintNFT />}
 
       <div className="mx-auto max-w-2xl py-8 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
         {openSale && <SaleModal tokenId={tokenId} />}

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { useMoralis } from "react-moralis";
 import { Client } from "@livepeer/webrtmp-sdk";
+import { createLivePeerStream } from "../../utils/utils";
 
 import { VideoCameraIcon, XIcon } from "@heroicons/react/outline";
 const CALL_OPTIONS = {
@@ -34,9 +35,34 @@ export default function StreamPage() {
   const sessionRef = useRef(null);
   const [livepeerStreamObject, setLivepeerStreamObject] = useState();
   const [isLive, setIsLive] = useState(false);
+
   useEffect(() => {
-    setLivepeerStreamObject(JSON.parse(user.get("stream")));
+    async function getLivePeer() {
+      if (
+        user.get("stream") == undefined ||
+        user.get("stream") == "" ||
+        user.get("stream") == "{}" ||
+        user.get("stream") == "undefined"
+      ) {
+        const livepeer = createLivePeerStream("Artist Live Stream");
+        // alert(JSON.stringify(livepeer));
+        user.set("stream", JSON.stringify(livepeer));
+        user.save();
+        alert(livepeer);
+        setLivepeerStreamObject(livepeer);
+      } else {
+        alert("text");
+        setLivepeerStreamObject(JSON.parse(user.get("stream")));
+      }
+    }
+    getLivePeer();
   }, []);
+  //  USE EFFECT
+
+  // useEffect(() => {
+  //   setLivepeerStreamObject(JSON.parse(user.get("stream")));
+  // }, []);
+
   const streamButtonClicked = async () => {
     if (!isLive) {
       videoRef.current.volume = 0;
@@ -46,12 +72,6 @@ export default function StreamPage() {
         audio: true,
       });
       if (!stream.current) {
-        /* setOpenNotification(true);
-             setNotificationHeader("ERROR LOADING MEDIA DEVICE")
-             setNotificationBody("Your stream cannot be started.");
-             setNotificationType(2); //Error
-             setEventNotFound(true);
-             */
         return;
       }
 

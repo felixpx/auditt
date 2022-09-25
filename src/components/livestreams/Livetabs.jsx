@@ -12,7 +12,7 @@ function classNames(...classes) {
 }
 
 export default function BridgeTabs() {
-  const [selectedTab, setSelectedTab] = useState("Live");
+  const [selectedTab, setSelectedTab] = useState("Stream");
 
   return (
     <div className="bg-white z-50 rounded-xl shadow-xl">
@@ -71,13 +71,13 @@ export default function BridgeTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "DeBridge"} className="py-24">
+        <div hidden={selectedTab != "View"} className="py-24">
           {/* <DeBridge /> */}
-          <ViewPage />
+          {/* <ViewPage /> */}
         </div>
 
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Connext"} className="py-96">
+        <div hidden={selectedTab != "Stream"} className="py-24">
           <StreamPage />
         </div>
       </div>

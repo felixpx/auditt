@@ -1,10 +1,11 @@
 import { useState } from "react";
-import DeBridge from "./DeBridge";
+import BridgeDe from "./BridgeDe";
+import Swap from "./Swap";
 // import Collection from "./Collection";
 
 const tabs = [
-  { name: "DeBridge", href: "#", current: true },
-  { name: "Connext", href: "#", current: false },
+  { name: "Swap", href: "#", current: true },
+  { name: "Bridge", href: "#", current: false },
 ];
 
 function classNames(...classes) {
@@ -12,7 +13,7 @@ function classNames(...classes) {
 }
 
 export default function BridgeTabs() {
-  const [selectedTab, setSelectedTab] = useState("DeBridge");
+  const [selectedTab, setSelectedTab] = useState("Swap");
 
   return (
     <div className="bg-white z-50 rounded-xl shadow-xl">
@@ -71,13 +72,13 @@ export default function BridgeTabs() {
         {/* NAVIGATION OUTPUT */}
 
         {/* AUDITT LISTINGS */}
-        <div hidden={selectedTab != "DeBridge"} className="py-24">
-          <DeBridge />
+        <div hidden={selectedTab != "Swap"} className="py-4">
+          <Swap />
         </div>
 
         {/* COLLECTION ARTICLES */}
-        <div hidden={selectedTab != "Connext"} className="py-96">
-          {/* <Connext /> */}
+        <div hidden={selectedTab != "Bridge"} className="py-4">
+          <BridgeDe />
         </div>
       </div>
     </div>

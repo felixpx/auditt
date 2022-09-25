@@ -43,11 +43,9 @@ export default function ApplicationTable() {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">
-            Approved Artists
-          </h1>
+          <h1 className="text-xl font-semibold text-gray-900">Applications</h1>
           <p className="mt-2 text-sm text-gray-700">
-            A list of all approved users.
+            A list of all KYC applicants.
           </p>
         </div>
       </div>

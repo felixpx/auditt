@@ -83,7 +83,7 @@ export default function Marketlist() {
         <div hidden={selectedTab != "KYC"} className="py-8">
           <KYCForm />
         </div>
-        <div hidden={selectedTab != "Proof Of Person"} className="py-8">
+        <div hidden={selectedTab != "Proof Of Person"} className="py-48">
           <ProofOfPersonForm />
         </div>
       </div>

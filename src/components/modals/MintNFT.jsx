@@ -1,17 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-// import { CreditCardIcon } from "@heroicons/react/outline";
 import { ethers } from "ethers";
-
 import {
   AuDiTTManagerAddress,
   AuDiTTManagerABI,
 } from "../../Contracts/AuDiTTManagerContract";
 import { NFTStorage } from "nft.storage";
-
 import { useMoralis, useMoralisFile } from "react-moralis";
-import { AuDiTTNFTABI } from "../../Contracts/AuDiTTNFT";
+import Notification from "../Notification/Notification";
 
 export default function CreateCollection(props) {
   const { web3, user, Moralis } = useMoralis();
@@ -220,6 +217,13 @@ export default function CreateCollection(props) {
             </Transition.Child>
           </div>
         </div>
+        <Notification
+          type={dialogType}
+          show={show}
+          close={close}
+          title={notificationTitle}
+          description={notificationDescription}
+        />
       </Dialog>
     </Transition.Root>
   );

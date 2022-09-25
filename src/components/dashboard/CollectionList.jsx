@@ -132,7 +132,7 @@ export default function Marketlist() {
           data[selected].get("contractAddress")
         );
         console.log(results);
-        alert(`${data[selected].get("contractAddress")}  `);
+        // alert(`${data[selected].get("contractAddress")}  `);
         alert(JSON.stringify(results));
       }
     }

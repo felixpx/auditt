@@ -11,6 +11,7 @@ import {
 import { NFTStorage } from "nft.storage";
 
 import { useMoralis, useMoralisFile } from "react-moralis";
+import { AuDiTTNFTABI } from "../../Contracts/AuDiTTNFT";
 
 export default function CreateCollection(props) {
   const { web3, user, Moralis } = useMoralis();
@@ -40,10 +41,6 @@ export default function CreateCollection(props) {
     const description = document.getElementById("desc").value;
     const file = document.getElementById("file-upload").files[0];
 
-    // const NFTs = Moralis.Object.extend("NFTs");
-    // const nfts = new NFTs();
-
-    alert("text");
     let ipfsFile = "";
     if (file) {
       console.log("uploading file");
@@ -51,36 +48,36 @@ export default function CreateCollection(props) {
         ipfsFile = hash._ipfs;
       });
     }
-    alert("text2");
 
+    const metadata = await nftstorage.store({
+      name: title,
+      description: description,
+      image: file,
+    });
+
+    alert(metadata.url);
+    alert(AuDiTTManagerABI);
     try {
-      const metadata = await nftstorage.store({
-        name: title,
-        description: description,
-        image: ipfsFile,
-      });
-
-      alert(metadata.url);
-
-      const AudittManager = new ethers.Contract(
+      const AuDiTTManagerContract = new ethers.Contract(
         AuDiTTManagerAddress,
         AuDiTTManagerABI,
         web3.getSigner()
       );
-      let transaction = await AudittManager.mint(
+
+      let transaction = await AuDiTTManagerContract.mint(
         "0x4cf41b71225d04a2cacd5ee5ae0ca1798b63ab86",
         title,
         metadata.url,
         description
       );
-      const receipt = await transaction.wait();
+      transaction.wait();
+
       setDialogType(1); //Success
       setNotificationTitle("minted nft ");
       setNotificationDescription(`Your NFT was minted successfully.`);
       setShow(true);
-
-      //
-    } catch {
+    } catch (error) {
+      alert(error.message);
       setDialogType(2); //failed
       setNotificationTitle("Failed");
       setNotificationDescription(" something went wrong");

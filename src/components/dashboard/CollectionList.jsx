@@ -85,6 +85,7 @@ export default function Marketlist() {
       setData(d);
  
       setGotCollections(true);
+      if(results.length > 0)      
       setSelected(results[0].id);
     });
   }, []);

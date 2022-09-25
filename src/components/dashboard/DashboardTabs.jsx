@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Account from "./Account";
 import Collection from "./Collection";
-import Nfts from './NFTs'
+import Nfts from "./NFTs";
 const tabs = [
   { name: "Account", href: "#", current: true },
-  { name: "Collection", href: "#", current: false },
+  { name: "Create", href: "#", current: false },
   { name: "My NFTs", href: "#", current: false },
 ];
 
@@ -77,12 +77,12 @@ export default function DashboardTabs() {
         </div>
 
         {/* COLLECTION Listing */}
-        <div hidden={selectedTab != "Collection"} className="py-16">
+        <div hidden={selectedTab != "Create"} className="py-16">
           <Collection />
         </div>
 
-         {/* My NFT Listing */}
-         <div hidden={selectedTab != "My NFTs"} className="py-16">
+        {/* My NFT Listing */}
+        <div hidden={selectedTab != "My NFTs"} className="py-16">
           <Nfts />
         </div>
       </div>

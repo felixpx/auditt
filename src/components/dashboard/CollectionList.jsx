@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import SaleModal from "../modals/SaleModal";
 import { useMoralis } from "react-moralis";
 import { covalentGetMetadataForContract } from "../../utils/utils";
@@ -48,14 +48,14 @@ const products = [
 export default function Marketlist() {
   const [openSale, setOpenSale] = useState(false);
   const [selected, setSelected] = useState();
-  
+
   const [gotCollections, setGotCollections] = useState(false);
   const [collections, setCollections] = useState([]);
-  const [data,setData] = useState(new Map())
-  const [myListings,setMyListings] =useState(new Map())
-  const [metadata,setMetadata] = useState([])
-  
-  const { Moralis, isWeb3Enabled, enableWeb3,user } = useMoralis();
+  const [data, setData] = useState(new Map());
+  const [myListings, setMyListings] = useState(new Map());
+  const [metadata, setMetadata] = useState([]);
+
+  const { Moralis, isWeb3Enabled, enableWeb3, user } = useMoralis();
 
   const [tokenId, setTokenId] = useState();
   function sellItem(id) {
@@ -74,71 +74,88 @@ export default function Marketlist() {
     const Collection = Moralis.Object.extend("Collection");
     const query = new Moralis.Query(Collection);
     query.ascending("name");
-    query.equalTo("owner",user.get("ethAddress").toLowerCase())
+    query.equalTo("owner", user.get("ethAddress").toLowerCase());
     query.find().then((results) => {
       setCollections(results);
-      let d = new Map()
-      results.forEach(async(result)=>{
+      let d = new Map();
+      results.forEach(async (result) => {
         d[result.id] = result;
-
-      })
+      });
       setData(d);
- 
+
       setGotCollections(true);
-      if(results.length > 0)      
-      setSelected(results[0].id);
+      if (results.length > 0) setSelected(results[0].id);
     });
   }, []);
-  
+
   //Get My NFT Listings in Market Place
   useEffect(() => {
     if (gotCollections) {
       const MarketPlace = Moralis.Object.extend("MarketPlace");
       const query = new Moralis.Query(MarketPlace);
       query.equalTo("seller", user.get("ethAddress").toLowerCase());
-      query.equalTo("completed",false);
+      query.equalTo("completed", false);
       query.find().then((results) => {
         let p = new Map();
-               results.forEach((result) => {
-          p[result.id]=true;
-                });
+        results.forEach((result) => {
+          p[result.id] = true;
+        });
         setMyListings(p);
-        
       });
     }
   }, [selected]);
 
-
   //Get
   useEffect(() => {
-    async function getMetadata()
-    {
-       if (gotCollections) {
-    
-          const results = await covalentGetMetadataForContract(data[selected].get("contractAddress"))
-          console.log(results)
-         alert(`${data[selected].get("contractAddress")}  `)
-         alert(JSON.stringify(results))
-       }
-   }
-   getMetadata()
+    async function getMetadata() {
+      if (gotCollections) {
+        const results = await covalentGetMetadataForContract(
+          data[selected].get("contractAddress")
+        );
+        console.log(results);
+        alert(`${data[selected].get("contractAddress")}  `);
+        alert(JSON.stringify(results));
+      }
+    }
+    getMetadata();
   }, [selected]);
+
+  function createCollection() {
+    // pop up modal create collection
+  }
+  function mintNFT() {
+    // pop up modal create collection
+  }
 
   return (
     <div className="bg-white z-50 rounded-xl overflow-y-scroll">
-       <select
-        id="collection"
-        value={selected}
-        onChange={handleChange}
-        name="country"
-        autoComplete="collection-name"
-        className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
-      >
-        {collections.map((collection, index) => (
-          <option value={collection.id}>{collection.get("name")}</option>
-        ))}
-      </select>
-     
+      <div className="flex flex-row items-center justify-evenly">
+        <select
+          id="collection"
+          value={selected}
+          onChange={handleChange}
+          name="country"
+          autoComplete="collection-name"
+          className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+        >
+          {collections.map((collection, index) => (
+            <option value={collection.id}>{collection.get("name")}</option>
+          ))}
+        </select>
+        <button
+          onClick={createCollection}
+          className={` m-4 w-2/12 mt-2 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+        >
+          Create Collection
+        </button>
+        <button
+          onClick={mintNFT}
+          className={` m-4 w-2/12 mt-2 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+        >
+          Mint NFT
+        </button>
+      </div>
+
       <div className="mx-auto max-w-2xl py-8 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
         {openSale && <SaleModal tokenId={tokenId} />}
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
